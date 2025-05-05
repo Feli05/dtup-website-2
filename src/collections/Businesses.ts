@@ -1,12 +1,5 @@
 import { CollectionConfig } from 'payload';
 
-// Using locals property to pass data between hooks
-type CustomRequest = {
-  locals: {
-    mediasToDelete?: (string | number)[];
-  };
-}
-
 export const Businesses: CollectionConfig = {
   slug: 'businesses',
   admin: {

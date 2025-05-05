@@ -190,8 +190,16 @@ export interface Business {
  */
 export interface Category {
   id: number;
+  /**
+   * The slug for the category - will be automatically populated when the title is changed
+   */
+  slug: string;
   title: string;
   description: string;
+  /**
+   * The image for the category in /comunidad
+   */
+  image: number | Media;
   /**
    * Background color in Tailwind format (e.g., bg-[#efefef])
    */
@@ -332,8 +340,10 @@ export interface BusinessesSelect<T extends boolean = true> {
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
+  slug?: T;
   title?: T;
   description?: T;
+  image?: T;
   bgColor?: T;
   businesses?: T;
   updatedAt?: T;

@@ -15,6 +15,14 @@ export const Categories: CollectionConfig = {
     delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'The slug for the category - will be automatically populated when the title is changed'
+      }
+    },
     { 
       name: 'title', 
       type: 'text', 
@@ -24,6 +32,15 @@ export const Categories: CollectionConfig = {
       name: 'description', 
       type: 'textarea', 
       required: true,
+    },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      admin: {
+        description: 'The image for the category in /comunidad'
+      }
     },
     { 
       name: 'bgColor', 

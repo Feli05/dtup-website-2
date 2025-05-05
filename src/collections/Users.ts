@@ -1,12 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-// Define type for our user 
-type User = {
-  id: string;
-  email: string;
-  role?: 'admin' | 'user';
-}
-
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {

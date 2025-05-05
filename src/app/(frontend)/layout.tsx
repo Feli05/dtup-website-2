@@ -1,19 +1,31 @@
-import React from 'react'
-import './styles.css'
+import "./globals.css";
+import { Metadata } from "next";
+import Providers from "@/components/Wrappers/Providers";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
-export const metadata = {
-  description: 'DTUP Website CMS',
-  title: 'DTUP Website CMS',
-}
+export const metadata: Metadata = {
+  title: "De Todo Un Poco",
+  description: "DTUP Website CMS",
+  icons: {
+    icon: "/DTUP-logo-RGB-01.png"
+  }
+};
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function FrontendLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body>
-        <main>{children}</main>
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
-  )
+  );
 }
