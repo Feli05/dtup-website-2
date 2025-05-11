@@ -35,7 +35,7 @@ const titleHover: Variants = {
   },
 };
 
-export const Hero = () => {
+export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // parallax scroll for the image
@@ -48,7 +48,7 @@ export const Hero = () => {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen flex items-center py-10 md:py-20 overflow-hidden bg-[#FFF8E7]"
+      className="min-h-screen flex items-center py-10 md:py-20 overflow-hidden bg-dtup-beige"
     >
       <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 lg:gap-32 items-center">
 
@@ -115,5 +115,3 @@ export const Hero = () => {
     </section>
   );
 };
-
-export default Hero;

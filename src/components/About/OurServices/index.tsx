@@ -38,7 +38,7 @@ function ServiceCard({ svc }: { svc: ServiceItem }) {
   );
 }
 
-export function OurServices() {
+export default function OurServices() {
   return (
     <section className="container mx-auto px-4 py-20">
       <h2 className="text-4xl md:text-5xl lg:text-6xl font-playfair mb-12 text-center">
@@ -61,5 +61,3 @@ export function OurServices() {
     </section>
   );
 }
-
-export default OurServices;

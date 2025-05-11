@@ -15,7 +15,7 @@ const textRevealVariants = {
   }),
 };
 
-export function AboutIntro() {
+export default function AboutIntro() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Parallax scroll for image
@@ -67,5 +67,3 @@ export function AboutIntro() {
     </>
   );
 }
-
-export default AboutIntro;

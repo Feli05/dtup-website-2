@@ -1,26 +1,40 @@
-import type { FooterLinks } from "./types"
+// Footer navigation columns
+interface FooterLinkType {
+  label: string;
+  href: string;
+}
 
-// Call-to-Action
-export const CTA_LINKS: FooterLinks = [
-  { to: "/contacto", text: "Contacto →" }
-]
+interface FooterColumnType {
+  heading: string;
+  links: FooterLinkType[];
+}
 
-// Social networks
-export const SOCIAL_LINKS: FooterLinks = [
-  { to: "https://www.facebook.com/share/g/1F76hhLdL5/?mibextid=wwXIfr", text: "FACEBOOK" },
-  { to: "https://www.instagram.com/detodounpococr16?igsh=MjBiejdwNW14dmdp", text: "INSTAGRAM" },
-]
+export const LOGO = {
+  src: "/DTUP-logo-RGB-01.png",
+  alt: "De Todo Un Poco Logo",
+};
 
-// Sitemap
-export const SITEMAP_LINKS: FooterLinks = [
-  { to: "/",               text: "PÁGINA PRINCIPAL" },
-  { to: "/comunidad",      text: "COMUNIDAD"        },
-  { to: "/sobre-nosotras", text: "SOBRE NOSOTRAS"   },
-  { to: "/contacto",       text: "CONTACTO"         },
-]
-
-// Credits
-export const CREDIT_LINKS: FooterLinks = [
-  { to: "https://felitrejos.com", text: "felitrejos.com" },
-  { to: "https://ajha.ca",        text: "ajha.ca"        },
-]
+export const FOOTER_LINKS: FooterColumnType[] = [
+  {
+    heading: "Redes",
+    links: [
+      { label: "Facebook", href: "https://www.facebook.com/detodounpococr" },
+      { label: "Instagram", href: "https://www.instagram.com/detodounpococr/" },
+    ],
+  },
+  {
+    heading: "Navegación",
+    links: [
+      { label: "Sobre Nosotras", href: "/sobre-nosotras" },
+      { label: "Comunidad", href: "/comunidad" },
+      { label: "Contacto", href: "/contacto" },
+    ],
+  },
+  {
+    heading: "Diseñado por:",
+    links: [
+      { label: "felitrejos.com", href: "https://felitrejos.com" },
+      { label: "ajha.ca", href: "https://ajha.ca" },
+    ],
+  },
+];

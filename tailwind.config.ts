@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
   darkMode: ["class"],
@@ -55,6 +56,26 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Site-specific colors
+        dtup: {
+          beige: "#FFF8E7",
+          highlight: "#FFE5B4",
+          dark: "#1a1a1a",
+          services: {
+            fashion: "#FFB0B0",
+            health: "#709FB0",
+            food: "#A0C1B8",
+            professional: "#F4EBC1",
+            home: "#DEAA79",
+            tech: "#FFE6A9",
+            entertainment: "#B1C29E",
+            other: "#659287"
+          },
+          about: {
+            intro: "#A9BFA8",
+            services: "#FAFFC5"
+          }
+        }
       },
       keyframes: {
         fadeIn: {
@@ -67,5 +88,18 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function({ addUtilities }) {
+      addUtilities({
+        '.no-scrollbar': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    }),
+  ],
 } satisfies Config; 

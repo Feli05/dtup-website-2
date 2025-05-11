@@ -7,16 +7,12 @@ export const Categories: CollectionConfig = {
     defaultColumns: ['title', 'bgColor'],
   },
   access: {
-    // Public read access - authentication required
-    read: ({ req: { user } }) => Boolean(user),
+    // Public read access - no authentication required
+    read: () => true,
     // Only authenticated users can modify
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
-  },
-  auth: {
-    useAPIKey: true,
-    disableLocalStrategy: true,
   },
   fields: [
     {

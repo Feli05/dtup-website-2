@@ -91,4 +91,15 @@
 
 .font-markazi {
   font-family: 'Markazi Text', serif;
+}
+
+/* Carousel styles for better touchpad/gesture scrolling */
+.carousel {
+  overflow-x: auto;
+  /* prevent parent/body from scrolling when you hit the carousel's edges */
+  overscroll-behavior-x: contain;
+  /* lock native touch-action to vertical, so horizontal stays here */
+  touch-action: pan-y;
+  /* smooth momentum scrolling on iOS/Safari */
+  -webkit-overflow-scrolling: touch;
 } 

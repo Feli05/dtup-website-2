@@ -1,58 +1,54 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
-import { HoverLink } from "@/components/ui/HoverLink";
-import { LinkSection } from "@/components/ui/LinkSection";
-import {
-  CTA_LINKS,
-  SOCIAL_LINKS,
-  SITEMAP_LINKS,
-  CREDIT_LINKS,
-} from "./constants";
+import { FOOTER_LINKS, LOGO } from "./constants";
+import FacebookIcon from "@/components/ui/icons/FacebookIcon";
+import InstagramIcon from "@/components/ui/icons/InstagramIcon";
 
-export function Footer() {
+export default function Footer() {
   return (
-    <footer className="bg-[#FFF8E7] text-black pt-16 font-playfair w-full">
+    <footer className="bg-dtup-beige text-black pt-16 font-playfair w-full">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 gap-y-12 mb-16">
-
-          {/* CTA */}
-          <div>
-            <h2 className="text-4xl mb-4">¡Colaboremos!</h2>
-            {CTA_LINKS.map(({ to, text }) => (
-              <HoverLink
-                key={to}
-                href={to}
-                className="inline-flex items-center border border-black px-8 py-3 hover:bg-black hover:text-white transition-colors"
-              >
-                {text}
-              </HoverLink>
-            ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-16">
+          {/* Logo */}
+          <div className="flex flex-col">
+            <div className="w-44 h-32 relative">
+              <Image
+                src={LOGO.src}
+                alt={LOGO.alt}
+                fill
+                style={{ objectFit: "contain", objectPosition: "left" }}
+              />
+            </div>
           </div>
 
-          {/* Social */}
-          <LinkSection title="Redes" links={SOCIAL_LINKS} external />
-
-          {/* Sitemap */}
-          <LinkSection title="Navegación" links={SITEMAP_LINKS} />
-
-          {/* Credits */}
-          <LinkSection title="Diseñado por:" links={CREDIT_LINKS} external />
-        </div>
-
-        {/* Full-width logo */}
-        <div className="-mx-4 md:-mx-6">
-          <Image
-            src="/DTUP-logo-RGB-01.png"
-            alt="DTUP Logo"
-            width={1200}
-            height={400}
-            className="w-full"
-          />
+          {/* Links */}
+          {FOOTER_LINKS.map((column, index) => (
+            <div key={column.heading}>
+              <h3 className="font-medium uppercase tracking-wider mb-4 text-xl">
+                {column.heading}
+              </h3>
+              <ul className="space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-lg hover:underline transition-all flex items-center gap-2"
+                      target={link.href.startsWith("http") ? "_blank" : undefined}
+                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    >
+                      {index === 0 && link.label === "Facebook" && <FacebookIcon className="w-5 h-5" />}
+                      {index === 0 && link.label === "Instagram" && <InstagramIcon className="w-5 h-5" />}
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </footer>
   );
-}
-
-export default Footer;
+};

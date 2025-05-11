@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { VIDEO_SRC, VIDEO_ATTRIBUTION, LOGO } from "./constants";
 
-export const LandingSection = () => {
+export default function LandingSection() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Video Background */}
@@ -39,5 +39,3 @@ export const LandingSection = () => {
     </section>
   );
 };
-
-export default LandingSection;

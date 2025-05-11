@@ -1,55 +1,37 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { EVENTS } from "./constants";
 import type { YearBlock } from "./types";
+import useMobile from "@/hooks/useMobile";
 
-export function EventsSection() {
+export default function EventsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const isMobile = useMobile();
 
-  // Detect desktop breakpoint
-  useEffect(() => {
-    const update = () => setIsDesktop(window.innerWidth >= 768);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  // Parallax header y-offset
+  // Parallax header y-offset with fixed position
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"],
   });
-  const headerY = useTransform(scrollYProgress, [0, 0.8], ["100%", "-53%"]);
-
-  // Darken body bg when in view
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) document.body.style.backgroundColor = "#1a1a1a";
-      },
-      { threshold: 0.5 }
-    );
-    if (containerRef.current) obs.observe(containerRef.current);
-    return () => {
-      if (containerRef.current) obs.unobserve(containerRef.current);
-    };
-  }, []);
+  
+  const headerY = useTransform(scrollYProgress, 
+    [0, 0.15, 0.5], 
+    ["50%", "0%", "0%"]
+  );
 
   return (
     <section
       ref={containerRef}
-      className="relative text-white transition-colors duration-1000 bg-[#1a1a1a]"
+      className="relative text-white transition-colors duration-1000 bg-dtup-dark"
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 md:gap-y-36 gap-x-8 min-h-screen">
 
-          {/* Header */}
           <motion.div
-            className="md:col-span-4 relative md:sticky top-24 h-fit mt-0 md:mt-28"
-            style={isDesktop ? { y: headerY } : undefined}
+            className={`md:col-span-4 relative md:sticky ${!isMobile && 'top-32'} h-fit mt-0 md:mt-32`}
+            style={!isMobile ? { y: headerY } : undefined}
           >
             <h2 className="font-playfair text-6xl md:text-7xl lg:text-[5.4rem] leading-tight">
               Nuestros <br />eventos
@@ -83,5 +65,3 @@ export function EventsSection() {
     </section>
   );
 }
-
-export default EventsSection;

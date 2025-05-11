@@ -41,7 +41,7 @@ function Slide({ services, direction }: SlideProps) {
               mx-4 sm:mx-6 md:mx-10
               p-4 sm:p-6 md:p-8 rounded-full ${svc.bgColor}
               flex flex-col justify-center items-center text-center
-              shadow-sm border border-gray-100 hover:shadow-md transition-shadow
+              shadow-sm border border-gray-100 transition-all
             `}
           >
             <h3 className="text-xl sm:text-2xl font-playfair mb-2">
@@ -58,7 +58,7 @@ function Slide({ services, direction }: SlideProps) {
 }
 
 /** Main Services Slider */
-export const Services = () => {
+export default function Services() {
   const [data, setData] = useState<ServicesData>({ row1: [], row2: [] });
   const router = useRouter();
 
@@ -67,7 +67,7 @@ export const Services = () => {
   }, []);
 
   return (
-    <section className="min-h-[50vh] overflow-hidden bg-[#FFF8E7] transition-colors duration-1000">
+    <section className="min-h-[50vh] overflow-hidden bg-dtup-beige transition-colors duration-1000">
       <div className="py-4 pb-16 sm:py-6 sm:pb-24 md:py-8 md:pb-32">
         <h2 className="text-4xl sm:text-5xl md:text-7xl font-playfair mb-6 sm:mb-8 md:mb-12 text-center">
           Comunidad
@@ -100,5 +100,3 @@ export const Services = () => {
     </section>
   );
 };
-
-export default Services;

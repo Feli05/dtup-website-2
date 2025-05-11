@@ -6,10 +6,6 @@ import { animate } from "framer-motion";
 import { STATISTICS } from "./constants";
 import type { StatisticsData } from "./types";
 
-interface StatisticsProps {
-  // bgColor is handled at the page level via your useSectionBackground hook
-}
-
 /**
  * Animates a number from 95%→100% of its final value when the element scrolls into view.
  */
@@ -51,7 +47,7 @@ function AnimatedNumber({
   );
 }
 
-export function Statistics() {
+export default function Statistics() {
   const stats: StatisticsData = STATISTICS;
 
   return (
@@ -203,5 +199,3 @@ export function Statistics() {
     </section>
   );
 }
-
-export default Statistics;

@@ -21,6 +21,10 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    livePreview: {
+      url: 'http://localhost:3000',
+      collections: [Businesses.slug, Categories.slug],
+    }
   },
   collections: [Users, Media, Businesses, Categories],
   editor: lexicalEditor(),

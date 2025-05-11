@@ -18,7 +18,7 @@ const underline = {
   visible: { scaleX: 1, originX: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-export function MissionAndVision() {
+export default function MissionAndVision() {
   // separate in-view hooks so each title underlines when visible
   const [visRef, visInView] = useInView({ threshold: 0.3, triggerOnce: true });
   const [misRef, misInView] = useInView({ threshold: 0.3, triggerOnce: true });
@@ -86,5 +86,3 @@ export function MissionAndVision() {
     </div>
   );  
 }
-
-export default MissionAndVision;

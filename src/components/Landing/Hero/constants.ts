@@ -12,7 +12,7 @@ export const HERO_CONTENT: HeroContent = {
 
 // How the highlighted phrase should animate
 export const HIGHLIGHT_CONFIG: HighlightConfig = {
-  color: "#FFE5B4",
+  color: "#FFE5B4", 
   strokeWidth: 2,
   animationDuration: 800,
   iterations: 1,

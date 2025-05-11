@@ -2,7 +2,7 @@ import type { ServicesData } from "./types"
 
 /**  
  * Mock data—replace this with a real Payload CMS fetch  
- * in fetchServices() when you’re ready.  
+ * in fetchServices() when you're ready.  
  */
 export const DEFAULT_SERVICES: ServicesData = {
   row1: [
