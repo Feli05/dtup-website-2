@@ -86,7 +86,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {};
   globalsSelect: {};
@@ -122,7 +122,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -135,17 +135,30 @@ export interface User {
   password?: string | null;
 }
 /**
- * Media should only be uploaded through Business creation/editing
+ * Media for businesses and categories
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   /**
-   * Alternative text for the image (required for accessibility)
+   * Alternative text for the image for accessibility
    */
-  alt: string;
+  alt?: string | null;
+  /**
+   * Type of entity this file belongs to (business/category)
+   */
+  entityType?: string | null;
+  /**
+   * ID of the related entity
+   */
+  entityId?: string | null;
+  /**
+   * Name of the related entity (used for file naming)
+   */
+  entityName?: string | null;
+  originalFilename?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -163,16 +176,25 @@ export interface Media {
  * via the `definition` "businesses".
  */
 export interface Business {
-  id: number;
+  id: string;
   name: string;
   description: string;
   /**
    * The category this business belongs to
    */
-  category: number | Category;
-  logo?: (number | null) | Media;
+  category: string | Category;
+  /**
+   * Business logo image (recommended size: square, minimum 400x400px)
+   */
+  logo?: (string | null) | Media;
+  /**
+   * Images of the business (recommended size: 16:9 ratio, minimum 1200x675px)
+   */
   images: {
-    image: number | Media;
+    /**
+     * Select or upload an image
+     */
+    image: string | Media;
     id?: string | null;
   }[];
   contact?: {
@@ -189,7 +211,7 @@ export interface Business {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   /**
    * The slug for the category - will be automatically populated when the title is changed
    */
@@ -197,17 +219,17 @@ export interface Category {
   title: string;
   description: string;
   /**
-   * The image for the category in /comunidad
+   * Main category image (recommended size: 16:9 ratio, minimum 1200x675px)
    */
-  image: number | Media;
+  image: string | Media;
   /**
-   * Background color in Tailwind format (e.g., bg-[#efefef])
+   * Background color in Tailwind format (e.g., #efefef)
    */
   bgColor: string;
   /**
    * Businesses in this category - will be automatically populated when businesses select this category
    */
-  businesses?: (number | Business)[] | null;
+  businesses?: (string | Business)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -216,28 +238,28 @@ export interface Category {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'businesses';
-        value: number | Business;
+        value: string | Business;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -247,10 +269,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -270,7 +292,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -297,6 +319,10 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  entityType?: T;
+  entityId?: T;
+  entityName?: T;
+  originalFilename?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

@@ -1,5 +1,18 @@
 import { CollectionConfig } from 'payload';
 
+// Define context type for business hooks
+interface BusinessContext {
+  doc?: {
+    name?: string;
+    id?: string;
+  };
+}
+
+// Define context for delete operation
+interface BusinessDeleteContext {
+  mediaToDelete?: string[];
+}
+
 export const Businesses: CollectionConfig = {
   slug: 'businesses',
   admin: {
@@ -39,6 +52,9 @@ export const Businesses: CollectionConfig = {
       type: 'upload', 
       relationTo: 'media',
       required: false,
+      admin: {
+        description: 'Business logo image (recommended size: square, minimum 400x400px)'
+      }
     },
     {
       name: 'images',
@@ -50,12 +66,18 @@ export const Businesses: CollectionConfig = {
         singular: 'Image',
         plural: 'Images',
       },
+      admin: {
+        description: 'Images of the business (recommended size: 16:9 ratio, minimum 1200x675px)'
+      },
       fields: [
         { 
           name: 'image', 
           type: 'upload', 
           relationTo: 'media', 
-          required: true 
+          required: true,
+          admin: {
+            description: 'Select or upload an image'
+          }
         },
       ],
     },
@@ -71,11 +93,12 @@ export const Businesses: CollectionConfig = {
     },
   ],
   hooks: {
-    // Only add business to category when created
+    // Only add business to category when created and update media metadata
     afterChange: [
       async ({ doc, req, operation }) => {
         const { payload } = req;
         
+        // Process category relationship
         try {
           if (operation === 'create' && doc.category) {
             // Get the category
@@ -105,13 +128,103 @@ export const Businesses: CollectionConfig = {
           console.error('Error adding business to category:', error);
         }
         
+        // Update logo metadata if exists
+        if (doc.logo) {
+          try {
+            // Get the logo ID, whether it's an object or ID
+            const logoId = typeof doc.logo === 'object' 
+              ? doc.logo.id 
+              : doc.logo;
+            
+            // Update the media document with business metadata
+            await payload.update({
+              collection: 'media',
+              id: logoId,
+              data: {
+                alt: `${doc.name} logo`,
+                entityType: 'business',
+                entityName: doc.name,
+                entityId: doc.id
+              }
+            });
+          } catch (error) {
+            console.error('Error updating logo metadata:', error);
+          }
+        }
+        
+        // Update image metadata for each image
+        if (Array.isArray(doc.images) && doc.images.length > 0) {
+          for (const [index, imageItem] of doc.images.entries()) {
+            if (imageItem.image) {
+              try {
+                // Get the image ID, whether it's an object or ID
+                const imageId = typeof imageItem.image === 'object' 
+                  ? imageItem.image.id 
+                  : imageItem.image;
+                
+                // Update the media document with business metadata
+                await payload.update({
+                  collection: 'media',
+                  id: imageId,
+                  data: {
+                    alt: `${doc.name} image ${index + 1}`,
+                    entityType: 'business',
+                    entityName: doc.name,
+                    entityId: doc.id
+                  }
+                });
+              } catch (error) {
+                console.error(`Error updating image metadata for index ${index}:`, error);
+              }
+            }
+          }
+        }
+        
         return doc;
       },
     ],
-    // After deleting a business, remove it from category only
-    afterDelete: [
-      async ({ doc, req }) => {
+    // Before deleting a business, collect media IDs
+    beforeDelete: [
+      async ({ req, id, context }) => {
         const { payload } = req;
+        const ctx = context as BusinessDeleteContext;
+        
+        try {
+          // Get the business to find all associated media
+          const business = await payload.findByID({
+            collection: 'businesses',
+            id,
+            depth: 2, // Load relationships
+          });
+          
+          if (business) {
+            // Initialize array for media IDs to delete
+            ctx.mediaToDelete = [];
+            
+            // Add logo to delete list if exists
+            if (business.logo && typeof business.logo === 'object') {
+              ctx.mediaToDelete.push(business.logo.id.toString());
+            }
+            
+            // Add all business images to delete list
+            if (Array.isArray(business.images)) {
+              business.images.forEach(imageItem => {
+                if (imageItem.image && typeof imageItem.image === 'object' && ctx.mediaToDelete) {
+                  ctx.mediaToDelete.push(imageItem.image.id.toString());
+                }
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Error preparing business media for deletion:', error);
+        }
+      }
+    ],
+    // After deleting a business, remove it from category and delete associated media
+    afterDelete: [
+      async ({ doc, req, context }) => {
+        const { payload } = req;
+        const ctx = context as BusinessDeleteContext;
         
         try {
           // Remove from category
@@ -134,10 +247,20 @@ export const Businesses: CollectionConfig = {
               });
             }
           }
+          
+          // Delete all associated media files
+          if (ctx.mediaToDelete && ctx.mediaToDelete.length > 0) {
+            for (const mediaId of ctx.mediaToDelete) {
+              await payload.delete({
+                collection: 'media',
+                id: mediaId,
+              });
+            }
+          }
         } catch (error) {
-          console.error('Error removing business from category:', error);
+          console.error('Error cleaning up after business deletion:', error);
         }
-      },
-    ],
-  },
+      }
+    ]
+  }
 };

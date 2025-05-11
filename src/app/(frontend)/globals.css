@@ -102,4 +102,33 @@
   touch-action: pan-y;
   /* smooth momentum scrolling on iOS/Safari */
   -webkit-overflow-scrolling: touch;
+}
+
+/* Business Image Carousel Styles */
+.business-image-carousel .swiper-button-next,
+.business-image-carousel .swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.business-image-carousel .swiper-button-next:after,
+.business-image-carousel .swiper-button-prev:after {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.business-image-carousel .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.7;
+}
+
+.business-image-carousel .swiper-pagination-bullet-active {
+  background: white;
+  opacity: 1;
 } 

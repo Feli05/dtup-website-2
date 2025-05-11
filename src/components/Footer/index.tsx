@@ -3,8 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FOOTER_LINKS, LOGO } from "./constants";
-import FacebookIcon from "@/components/ui/icons/FacebookIcon";
-import InstagramIcon from "@/components/ui/icons/InstagramIcon";
+import { FacebookIcon, InstagramIcon } from "@/components/ui/icons";
 
 export default function Footer() {
   return (

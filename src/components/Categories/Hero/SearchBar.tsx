@@ -1,42 +1,44 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import type { SearchBarProps } from "./types";
 import { HERO_CONTENT } from "./constants";
+import { DropdownArrowIcon } from "@/components/ui/icons";
+import type { SearchBarProps } from "./types";
 
 export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(searchQuery, selectedCategory || undefined);
   };
 
-  const handleCategorySelect = (categoryId: string, categoryTitle: string) => {
-    setSelectedCategory(categoryId);
-    setIsDropdownOpen(false);
+  // Get the display text for the selected category
+  const getDisplayText = () => {
+    if (!selectedCategory) return HERO_CONTENT.categoryPlaceholder;
     
-    // Focus back on search input after selection
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
+    const category = categories.find(cat => cat && cat.id && String(cat.id) === selectedCategory);
+    return category?.title || HERO_CONTENT.categoryPlaceholder;
   };
 
-  // Display category title instead of ID for readability
-  const selectedCategoryTitle = selectedCategory 
-    ? categories.find(cat => String(cat.id) === selectedCategory)?.title || selectedCategory
-    : HERO_CONTENT.categoryPlaceholder;
-
   return (
-    <form 
-      onSubmit={handleSearch}
-      className="relative w-full max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden"
-    >
+    <form onSubmit={handleSubmit} className="relative w-full max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-visible">
       <div className="flex flex-col md:flex-row">
         {/* Search Input */}
         <div className="flex-grow relative">
@@ -44,7 +46,6 @@ export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
             <Search className="w-5 h-5 text-gray-400" />
           </div>
           <input
-            ref={searchInputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -60,64 +61,57 @@ export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
         <div className="md:hidden h-px w-full bg-gray-200"></div>
 
         {/* Category Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center justify-between px-4 py-4 bg-white text-gray-700 w-full md:w-auto md:min-w-[180px]"
           >
-            <span className="truncate">{selectedCategoryTitle}</span>
-            <svg 
-              className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
+            <span className="truncate">{getDisplayText()}</span>
+            <DropdownArrowIcon className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
           {/* Dropdown Menu */}
-          <AnimatePresence>
-            {isDropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.15 }}
-                className="absolute z-10 w-full bg-white rounded-b-lg shadow-lg max-h-60 overflow-y-auto"
+          <div 
+            className={`absolute left-0 right-0 top-full mt-0 bg-white rounded-b-lg shadow-lg max-h-40 overflow-y-auto border border-gray-200 transition-all duration-200 z-[100] ${isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible h-0'}`}
+          >
+            <div className="py-1">
+              {/* All Categories Option */}
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategory("");
+                  setIsDropdownOpen(false);
+                }}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
-                <div className="py-1">
-                  {/* All Categories Option */}
+                {HERO_CONTENT.categoryPlaceholder}
+              </button>
+              
+              <div className="h-px w-full bg-gray-200 my-1"></div>
+              
+              {/* Category Options */}
+              {categories?.map(category => {
+                if (!category || !category.id || !category.title) return null;
+                return (
                   <button
+                    key={String(category.id)}
                     type="button"
                     onClick={() => {
-                      setSelectedCategory("");
+                      setSelectedCategory(String(category.id));
                       setIsDropdownOpen(false);
                     }}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   >
-                    {HERO_CONTENT.categoryPlaceholder}
+                    {category.title}
                   </button>
-
-                  {/* Category Options */}
-                  {categories.map((category) => (
-                    <button
-                      key={String(category.id)}
-                      type="button"
-                      onClick={() => handleCategorySelect(String(category.id), category.title)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      {category.title}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {/* Mobile separator before search button */}
+        {/* Mobile separator */}
         <div className="md:hidden h-px w-full bg-gray-200"></div>
 
         {/* Search Button */}
