@@ -5,7 +5,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: process.env.S3_PUBLIC_URL,
+        hostname: 'pub-ebd681fe60f74c0694eac1ef832ed477.r2.dev',
       },
     ],
   },
