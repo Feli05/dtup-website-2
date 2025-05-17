@@ -31,6 +31,9 @@ export default function LandingSection() {
               alt={LOGO.alt}
               width={LOGO.width}
               height={LOGO.height}
+              priority
+              quality={75}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="w-full h-auto"
             />
           </div>

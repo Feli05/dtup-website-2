@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import { HERO_CONTENT } from "./constants";
-import { DropdownArrowIcon } from "@/components/ui/icons";
+import { DropdownArrowIcon, CloseIcon } from "@/components/ui/icons";
 import type { SearchBarProps } from "./types";
 
 export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
@@ -29,6 +29,14 @@ export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
     onSearch(searchQuery, selectedCategory || undefined);
   };
 
+  // Clear search query and perform search
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    if (searchQuery) {
+      onSearch("", selectedCategory || undefined);
+    }
+  };
+
   // Get the display text for the selected category
   const getDisplayText = () => {
     if (!selectedCategory) return HERO_CONTENT.categoryPlaceholder;
@@ -50,8 +58,18 @@ export const SearchBar = ({ categories, onSearch }: SearchBarProps) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={HERO_CONTENT.searchPlaceholder}
-            className="w-full pl-12 pr-4 py-4 text-black focus:outline-none"
+            className="w-full pl-12 pr-10 py-4 text-black focus:outline-none"
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <span className="sr-only">Limpiar búsqueda</span>
+              <CloseIcon />
+            </button>
+          )}
         </div>
 
         {/* Divider - Desktop */}

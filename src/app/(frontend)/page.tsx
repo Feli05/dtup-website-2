@@ -5,7 +5,7 @@ import EventsSection from "@/components/Landing/EventsSection";
 
 export default function IndexPage() {
   return (
-    <main className="relative">
+    <main>
       <LandingSection />
       <Hero />
       <Services />

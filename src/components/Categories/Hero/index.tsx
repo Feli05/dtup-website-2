@@ -7,15 +7,9 @@ import { HERO_IMAGES, HERO_CONTENT } from "./constants";
 import type { HeroProps } from "./types";
 import useMobile from "@/hooks/useMobile";
 
-export default function CategoriesHero({ categories }: HeroProps) {
+export default function CategoriesHero({ categories, onSearch }: HeroProps) {
   const isMobile = useMobile();
   
-  const handleSearch = (query: string, category?: string) => {
-    // This is just a UI placeholder - actual implementation will be added later
-    console.log("Search:", query, "Category:", category);
-    alert(`Búsqueda: ${query} - Categoría: ${category || 'Todas'}`);
-  };
-
   return (
     <section className="relative w-full overflow-hidden bg-dtup-beige">
       {/* Spacer div to push content down */}
@@ -87,7 +81,7 @@ export default function CategoriesHero({ categories }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-3xl mx-auto"
           >
-            <SearchBar categories={categories} onSearch={handleSearch} />
+            <SearchBar categories={categories} onSearch={onSearch} />
           </motion.div>
         </div>
       </div>

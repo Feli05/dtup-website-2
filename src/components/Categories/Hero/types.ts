@@ -12,4 +12,5 @@ export interface SearchBarProps {
 
 export interface HeroProps {
   categories: Category[];
+  onSearch: (query: string, category?: string) => void;
 } 
