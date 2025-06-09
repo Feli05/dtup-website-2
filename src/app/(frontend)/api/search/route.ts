@@ -7,11 +7,6 @@ export async function GET(request: Request) {
   const query = searchParams.get('search') || '';
   const categoryId = searchParams.get('category');
   
-  // Disable caching for now to debug search issues
-  const headers = {
-    'Cache-Control': 'no-cache, no-store, must-revalidate'
-  };
-  
   try {
     const payload = await getPayload({ config: configPromise });
     
@@ -31,7 +26,7 @@ export async function GET(request: Request) {
     
     // Return empty array if no search criteria
     if (!query && !categoryId) {
-      return NextResponse.json({ businesses: [] }, { headers });
+      return NextResponse.json({ businesses: [] });
     }
     
     const results = await payload.find({
@@ -44,7 +39,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ 
       businesses: results.docs,
       totalCount: results.totalDocs
-    }, { headers });
+    });
   } catch (error) {
     console.error('Search API error:', error);
     return NextResponse.json({ error: 'Search failed' }, { status: 500 });

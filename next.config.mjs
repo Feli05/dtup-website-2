@@ -9,10 +9,6 @@ const nextConfig = {
       },
     ],
   },
-  serverExternalPackages: ['@payloadcms/next'],
-  skipTrailingSlashRedirect: true,
 }
 
-export default withPayload(nextConfig, {
-  devBundleServerPackages: false,
-})
+export default withPayload(nextConfig, { devBundleServerPackages: false })
