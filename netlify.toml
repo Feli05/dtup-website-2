@@ -1,28 +1,17 @@
 [build]
   command = "pnpm run build"
-  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_FLAGS = "--version"
-  PNPM_FLAGS = "--store=node_modules/.pnpm-store"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[functions]
-  directory = ".netlify/functions"
-
-# Redirect all non-admin routes to Next.js
+# Block admin routes only
 [[redirects]]
   from = "/admin/*"
-  to = "/404.html"
+  to = "/404"
   status = 404
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/nextjs/:splat"
-  status = 200
 
 # Headers for API routes
 [[headers]]
