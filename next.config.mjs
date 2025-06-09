@@ -9,6 +9,8 @@ const nextConfig = {
       },
     ],
   },
+  // Updated syntax for Next.js 15
+  serverExternalPackages: ['@payloadcms/next'],
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
