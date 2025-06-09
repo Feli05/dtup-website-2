@@ -10,9 +10,9 @@
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "clean": "rm -rf .next node_modules pnpm-lock.yaml && pnpm install"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.806.0",
@@ -23,6 +23,7 @@
     "@payloadcms/payload-cloud": "3.33.0",
     "@payloadcms/richtext-lexical": "3.33.0",
     "@payloadcms/storage-s3": "3.33.0",
+    "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.1.6",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tanstack/react-query": "^5.18.1",
@@ -40,21 +41,18 @@
     "react-hook-form": "^7.56.3",
     "react-intersection-observer": "^9.15.1",
     "react-rough-notation": "^1.0.0",
-    "sharp": "0.32.6",
+    "sharp": "^0.34.2",
     "sonner": "^1.4.0",
     "swiper": "^11.2.6",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
     "@netlify/plugin-nextjs": "^5.7.2",
     "@types/node": "^22.5.4",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.2",
     "autoprefixer": "^10.4.16",
-    "eslint": "^9.16.0",
-    "eslint-config-next": "15.3.0",
     "postcss": "^8.4.31",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.1",
@@ -62,5 +60,6 @@
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0"
-  }
+  },
+  "packageManager": "pnpm@10.12.1"
 }
