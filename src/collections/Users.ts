@@ -7,33 +7,14 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   access: {
-    // Only authenticated users can see users - authentication required
+    // Allow admin access for authenticated users
     read: ({ req: { user } }) => Boolean(user),
-    
-    // Only allow creating if there are no existing users
-    create: async ({ req }) => {
-      const { payload } = req;
-      
-      // Check if any users exist
-      const existingUsers = await payload.find({
-        collection: 'users',
-        limit: 1,
-      });
-      
-      // Only allow creation if no users exist
-      return existingUsers.totalDocs === 0;
-    },
-    
-    // Only allow self-update
+    create: ({ req: { user } }) => Boolean(user), // Simplified - allow authenticated users to create
     update: ({ req: { user }, id }) => {
       if (!user) return false;
-      
-      // Users can only update themselves
-      return user.id === id;
+      return user.id === id; // Users can only update themselves
     },
-    
-    // No deleting users
-    delete: () => false,
+    delete: () => false, // No deleting users
   },
   fields: [
     // Email added by default by the auth feature

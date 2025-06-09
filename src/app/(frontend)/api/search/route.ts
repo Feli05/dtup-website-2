@@ -7,9 +7,9 @@ export async function GET(request: Request) {
   const query = searchParams.get('search') || '';
   const categoryId = searchParams.get('category');
   
-  // Set cache headers
+  // Disable caching for now to debug search issues
   const headers = {
-    'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' // 1 hour fresh, 1 day stale
+    'Cache-Control': 'no-cache, no-store, must-revalidate'
   };
   
   try {
