@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import payload from 'payload';
+import { getPayload } from 'payload';
+import configPromise from '@payload-config';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,12 +13,15 @@ export async function GET(request: Request) {
   };
   
   try {
+    const payload = await getPayload({ config: configPromise });
+    
     const where: any = {};
     
     if (query) {
       where.or = [
         { name: { contains: query } },
-        { description: { contains: query } }
+        { description: { contains: query } },
+        { 'tags.tag': { contains: query } }
       ];
     }
     

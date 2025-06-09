@@ -39,6 +39,30 @@ export const Businesses: CollectionConfig = {
       required: true 
     },
     {
+      name: 'tags',
+      type: 'array',
+      minRows: 0,
+      maxRows: 20,
+      required: false,
+      labels: {
+        singular: 'Tag',
+        plural: 'Tags',
+      },
+      admin: {
+        description: 'Search tags for this business (e.g., joyas, transporte, cocinero, etc.)'
+      },
+      fields: [
+        { 
+          name: 'tag', 
+          type: 'text', 
+          required: true,
+          admin: {
+            description: 'Enter a search tag (single word or short phrase)'
+          }
+        },
+      ],
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'categories',

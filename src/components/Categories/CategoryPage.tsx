@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import CategoriesHero from "@/components/Categories/Hero";
-import CategoryCarousel from "@/components/Categories/CategoryCarousel";
 import BusinessCarousel from "@/components/Categories/BusinessCarousel";
 import BusinessCard from "@/components/BusinessCard";
 import { Button } from "@/components/ui/button";
@@ -71,7 +70,12 @@ export default function CategoryPage({ categories, businesses }: CategoryPagePro
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {searchResults.map((business) => (
-                  <BusinessCard key={business.id} business={business} />
+                  <BusinessCard 
+                    key={business.id} 
+                    business={business} 
+                    allowExpandText={true}
+                    allowExpandImage={true}
+                  />
                 ))}
               </div>
             </>
@@ -87,14 +91,26 @@ export default function CategoryPage({ categories, businesses }: CategoryPagePro
         </div>
       ) : (
         <>
-          {/* Categories Carousel */}
+          {/* Business Carousels - One per Category */}
           <div className="w-full overflow-hidden">
-            <CategoryCarousel categories={categories} />
-          </div>
-
-          {/* Business Carousel */}
-          <div className="w-full overflow-hidden">
-            <BusinessCarousel businesses={businesses} />
+            {categories.map((category) => {
+              // Extract businesses from category object
+              const categoryBusinesses = category.businesses
+                ? category.businesses
+                    .filter(business => typeof business === 'object')
+                    .map(business => business as Business)
+                : [];
+              
+              return (
+                <BusinessCarousel
+                  key={category.id}
+                  title={category.title}
+                  businesses={categoryBusinesses}
+                  categorySlug={category.slug}
+                  maxItems={6}
+                />
+              );
+            })}
           </div>
         </>
       )}

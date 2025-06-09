@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import Link from "next/link";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import useMobile from "@/hooks/useMobile";
@@ -17,6 +18,7 @@ interface CustomCarouselProps {
   className?: string;
   slidesPerView?: { mobile: number; desktop: number };
   spaceBetween?: number;
+  viewMoreHref?: string;
 }
 
 export default function CustomCarousel({
@@ -25,13 +27,25 @@ export default function CustomCarousel({
   renderItem,
   className = "",
   slidesPerView = { mobile: 1.3, desktop: 3.3 },
-  spaceBetween = 32
+  spaceBetween = 32,
+  viewMoreHref
 }: CustomCarouselProps) {
   const isMobile = useMobile();
 
   return (
     <div className={`py-8 ${className}`}>
-      <h2 className="text-4xl font-bold text-center mb-8 font-playfair">{title}</h2>
+      {/* Title with optional "Ver más" link */}
+      <div className="flex justify-between items-center mb-6 md:mb-8 px-4 md:px-6">
+        <h2 className="text-2xl md:text-4xl font-bold font-playfair">{title}</h2>
+        {viewMoreHref && (
+          <Link 
+            href={viewMoreHref}
+            className="text-sm md:text-lg font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 hover:underline"
+          >
+            Ver más
+          </Link>
+        )}
+      </div>
       
       {/* Swiper carousel with padding container */}
       <div className="overflow-visible">

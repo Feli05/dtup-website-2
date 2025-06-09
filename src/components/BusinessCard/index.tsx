@@ -80,8 +80,8 @@ export default function BusinessCard({
   return (
     <>
       <motion.div
-        className="bg-dtup-beige rounded-3xl overflow-hidden flex flex-col shadow-sm transition-all duration-300 hover:shadow-md"
-        style={{ minHeight: '26rem' }}
+        className="bg-dtup-beige rounded-2xl md:rounded-3xl overflow-hidden flex flex-col shadow-sm transition-all duration-300 hover:shadow-md"
+        style={{ minHeight: '20rem' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
@@ -95,7 +95,7 @@ export default function BusinessCard({
           <div 
             className="transition-all duration-300 ease-in-out" 
             style={{ 
-              height: isImageHovered ? '16rem' : '12rem'
+              height: isImageHovered ? '14rem' : '10rem'
             }}
           >
             <Swiper
@@ -124,11 +124,11 @@ export default function BusinessCard({
         </div>
         
         {/* Business Info */}
-        <div className="p-6 flex flex-col flex-grow" style={{ minHeight: '14rem' }}>
+        <div className="p-4 md:p-6 flex flex-col flex-grow" style={{ minHeight: '10rem' }}>
           {/* Logo and Name */}
-          <div className="flex items-center gap-3 mb-3 min-h-[3rem]">
+          <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3 min-h-[2.5rem] md:min-h-[3rem]">
             {businessLogo && (
-              <div className="relative w-12 h-12 overflow-hidden rounded-full">
+              <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full">
                 <Image
                   src={businessLogo.url || ''}
                   alt={businessLogo.alt || `${business.name} logo`}
@@ -137,12 +137,12 @@ export default function BusinessCard({
                 />
               </div>
             )}
-            <h3 className="text-2xl font-bold font-playfair">{business.name}</h3>
+            <h3 className="text-lg md:text-2xl font-bold font-playfair">{business.name}</h3>
           </div>
           
           {/* Description */}
-          <div className="min-h-[4.5rem] mb-4">
-            <p className="text-gray-700">
+          <div className="min-h-[3.5rem] md:min-h-[4.5rem] mb-3 md:mb-4">
+            <p className="text-sm md:text-base text-gray-700">
               {truncatedDescription}
             </p>
           </div>

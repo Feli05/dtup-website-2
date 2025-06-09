@@ -184,6 +184,18 @@ export interface Business {
   name: string;
   description: string;
   /**
+   * Search tags for this business (e.g., joyas, transporte, cocinero, etc.)
+   */
+  tags?:
+    | {
+        /**
+         * Enter a search tag (single word or short phrase)
+         */
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * The category this business belongs to
    */
   category: string | Category;
@@ -347,6 +359,12 @@ export interface MediaSelect<T extends boolean = true> {
 export interface BusinessesSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   category?: T;
   logo?: T;
   images?:
