@@ -17,14 +17,19 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    // Disable admin in production - local development only
+    disable: process.env.NODE_ENV === 'production',
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    livePreview: {
-      url: process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000',
-      collections: [Businesses.slug, Categories.slug],
-    }
+    // Only enable live preview in development
+    ...(process.env.NODE_ENV !== 'production' && {
+      livePreview: {
+        url: 'http://localhost:3000',
+        collections: [Businesses.slug, Categories.slug],
+      }
+    })
   },
   collections: [Users, Media, Businesses, Categories],
   editor: lexicalEditor({}),
@@ -61,9 +66,13 @@ export default buildConfig({
     }),
   ],
   cors: [
-    process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000',
+    process.env.NODE_ENV === 'production' 
+      ? 'https://detodounpococr.netlify.app'
+      : 'http://localhost:3000',
   ].filter(Boolean),
   csrf: [
-    process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000',
+    process.env.NODE_ENV === 'production' 
+      ? 'https://detodounpococr.netlify.app'
+      : 'http://localhost:3000',
   ].filter(Boolean),
 })
