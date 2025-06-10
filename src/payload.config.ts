@@ -36,9 +36,6 @@ export default buildConfig({
     url: process.env.MONGO_URI || false,
   }),
   sharp,
-  upload: {
-    useTempFiles: true,
-  },
   plugins: [
     s3Storage({
       collections: {
