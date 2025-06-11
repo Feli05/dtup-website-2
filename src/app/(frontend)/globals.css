@@ -102,6 +102,8 @@
   touch-action: pan-y;
   /* smooth momentum scrolling on iOS/Safari */
   -webkit-overflow-scrolling: touch;
+  /* smooth transition timing for mobile */
+  --swiper-wrapper-transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Business Image Carousel Styles */

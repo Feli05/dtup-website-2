@@ -50,21 +50,32 @@ export default function CustomCarousel({
       {/* Swiper carousel with padding container */}
       <div className="relative overflow-visible">
         <Swiper
-          modules={[FreeMode, Mousewheel]}
+          modules={isMobile ? [FreeMode] : [FreeMode, Mousewheel]}
           spaceBetween={spaceBetween}
           slidesPerView={isMobile ? slidesPerView.mobile : slidesPerView.desktop}
-          freeMode={{
+          freeMode={isMobile ? {
+            enabled: true,
+            momentum: true,
+            momentumRatio: 0.6,
+            momentumVelocityRatio: 0.6,
+            minimumVelocity: 0.02
+          } : {
             enabled: true,
             momentum: true,
             momentumRatio: 0.8,
             momentumVelocityRatio: 0.8,
             minimumVelocity: 0.1
           }}
-          mousewheel={{
+          mousewheel={!isMobile ? {
             forceToAxis: true,
             sensitivity: 1.5
-          }}
+          } : undefined}
           grabCursor={true}
+          touchRatio={1.5}
+          threshold={10}
+          resistance={true}
+          resistanceRatio={0.5}
+          allowTouchMove={true}
           className="w-full py-4 px-6 carousel"
           slidesOffsetBefore={8}
           slidesOffsetAfter={8}
