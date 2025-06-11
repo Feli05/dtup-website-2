@@ -59,6 +59,7 @@ export default {
         // Site-specific colors
         dtup: {
           beige: "#FFF8E7",
+          "beige-light": "#FFFDF9",
           highlight: "#FFE5B4",
           dark: "#1a1a1a",
           services: {
@@ -72,8 +73,9 @@ export default {
             other: "#659287"
           },
           about: {
-            intro: "#A9BFA8",
-            services: "#FAFFC5"
+            intro: "#8FA68E",
+            services: "#779CB2",
+            statistics: "#1E293B"
           }
         }
       },

@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import type { BusinessCarouselProps } from "./types";
 import CustomCarousel from "@/components/ui/CustomCarousel";
 import BusinessCard from "@/components/BusinessCard";
@@ -11,14 +8,7 @@ export default function BusinessCarousel({ businesses = [], title, categorySlug,
   const displayBusinesses = businesses.slice(0, maxItems);
 
   const renderBusinessCard = (business: Business, index: number) => (
-    <motion.div
-      className="h-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2, delay: index * 0.1 }}
-    >
-      <BusinessCard business={business} allowExpandText={false} allowExpandImage={false} />
-    </motion.div>
+    <BusinessCard business={business} />
   );
 
   return (

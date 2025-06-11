@@ -51,14 +51,18 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 w-full z-50 bg-dtup-beige shadow-md
-        ${scrolled ? "py-3" : "py-8"} 
+        ${scrolled ? "py-3" : "py-5"} 
         transition-all duration-300 ease-in-out
       `}
     >
       <div className="container max-w-7xl mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="relative z-50">
-          <div className="h-16 w-36 relative">
+          <div 
+            className={`relative transition-all duration-300 ease-in-out
+              ${scrolled ? "h-14 w-32" : "h-20 w-44"}
+            `}
+          >
             <Image
               src={LOGO.src}
               alt={LOGO.alt}

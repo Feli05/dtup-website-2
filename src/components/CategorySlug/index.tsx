@@ -3,6 +3,7 @@ import BusinessCard from '@/components/BusinessCard';
 import { CategorySlugProps } from './types';
 import { Business } from '@/payload-types';
 import { ChevronLeftIcon } from '@/components/ui/icons';
+import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
 
 export default function CategorySlug({ category }: CategorySlugProps) {
   // Extract businesses from category
@@ -52,8 +53,6 @@ export default function CategorySlug({ category }: CategorySlugProps) {
                 <BusinessCard 
                   key={business.id} 
                   business={business} 
-                  allowExpandText={true}
-                  allowExpandImage={true}
                 />
               ))}
             </div>
@@ -65,6 +64,9 @@ export default function CategorySlug({ category }: CategorySlugProps) {
           )}
         </div>
       </div>
+
+      {/* Scroll to top button */}
+      <ScrollToTopButton />
     </div>
   );
 } 

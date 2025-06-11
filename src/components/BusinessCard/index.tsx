@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { InstagramIcon, FacebookIcon, WebsiteIcon, PhoneIcon, ChevronLeftIcon, ChevronRightIcon,CloseIcon } from "@/components/ui/icons";
 import type { Business, Media } from "@/payload-types";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import ContactLinks from './ContactLinks';
+import ExpandedCardModal from './ExpandedCardModal';
+import { ZoomIcon } from '@/components/ui/icons';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -16,30 +16,19 @@ import 'swiper/css/pagination';
 
 interface BusinessCardProps {
   business: Business;
-  allowExpandText?: boolean;
-  allowExpandImage?: boolean;
 }
 
 export default function BusinessCard({ 
   business, 
-  allowExpandText = false,
-  allowExpandImage = true,
 }: BusinessCardProps) {
-  const [textExpanded, setTextExpanded] = useState(false);
-  const [expandedImage, setExpandedImage] = useState<Media | null>(null);
-  const [expandedImageIndex, setExpandedImageIndex] = useState(0);
-  const [isImageHovered, setIsImageHovered] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const maxLength = 150;
   const description = business.description || "";
   const truncatedDescription =
-    description.length > maxLength && !textExpanded 
+    description.length > maxLength 
       ? description.substring(0, maxLength) + "..." 
       : description;
-
-  const toggleTextExpanded = () => {
-    setTextExpanded(prev => !prev);
-  };
 
   // Get business logo if it exists (logo is optional)
   const businessLogo = business.logo && typeof business.logo === 'object' ? business.logo : null;
@@ -53,82 +42,34 @@ export default function BusinessCard({
     })
     .filter((image): image is Media => image !== null);
 
-  // Handle expanded image navigation
-  const handlePrevImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newIndex = (expandedImageIndex - 1 + businessImages.length) % businessImages.length;
-    setExpandedImageIndex(newIndex);
-    setExpandedImage(businessImages[newIndex]);
-  };
-
-  const handleNextImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newIndex = (expandedImageIndex + 1) % businessImages.length;
-    setExpandedImageIndex(newIndex);
-    setExpandedImage(businessImages[newIndex]);
-  };
-
-  // Open expanded image with correct index
-  const openExpandedImage = (image: Media) => {
-    if (!allowExpandImage) return;
-    
-    const index = businessImages.findIndex(img => img.id === image.id);
-    setExpandedImageIndex(index >= 0 ? index : 0);
-    setExpandedImage(image);
+  const openExpandedCard = () => {
+    setIsExpanded(true);
   };
 
   return (
     <>
-      <motion.div
-        className="bg-dtup-beige rounded-2xl md:rounded-3xl overflow-hidden flex flex-col shadow-sm transition-all duration-300 hover:shadow-md"
-        style={{ minHeight: '20rem' }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.2 }}
+      <div 
+        className="bg-dtup-beige rounded-2xl md:rounded-3xl overflow-hidden flex flex-col h-[26rem] cursor-pointer hover:opacity-90 transition-opacity relative border border-gray-300/70"
+        onClick={openExpandedCard}
       >
-        {/* Business Images Carousel - expandable on hover */}
-        <div 
-          className="relative overflow-hidden business-image-carousel"
-          onMouseEnter={() => setIsImageHovered(true)}
-          onMouseLeave={() => setIsImageHovered(false)}
-        >
-          <div 
-            className="transition-all duration-300 ease-in-out" 
-            style={{ 
-              height: isImageHovered ? '14rem' : '10rem'
-            }}
-          >
-            <Swiper
-              modules={[Navigation, Pagination]}
-              navigation
-              pagination={{ clickable: true }}
-              className="h-full w-full"
-            >
-              {businessImages.map((image, index) => (
-                <SwiperSlide key={`image-${index}`}>
-                  <div 
-                    className={`relative w-full h-full ${allowExpandImage ? 'cursor-pointer' : ''}`}
-                    onClick={() => openExpandedImage(image)}
-                  >
-                    <Image
-                      src={image.url || ''}
-                      alt={image.alt || business.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+        {/* Business Image */}
+        <div className="relative overflow-hidden h-44">
+          {businessImages.length > 0 && (
+            <Image
+              src={businessImages[0].url || ''}
+              alt={businessImages[0].alt || business.name}
+              fill
+              className="object-cover"
+            />
+          )}
         </div>
         
         {/* Business Info */}
-        <div className="p-4 md:p-6 flex flex-col flex-grow" style={{ minHeight: '10rem' }}>
+        <div className="p-4 md:p-6 flex flex-col flex-grow">
           {/* Logo and Name */}
-          <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3 min-h-[2.5rem] md:min-h-[3rem]">
+          <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
             {businessLogo && (
-              <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full">
+              <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full flex-shrink-0">
                 <Image
                   src={businessLogo.url || ''}
                   alt={businessLogo.alt || `${business.name} logo`}
@@ -137,107 +78,37 @@ export default function BusinessCard({
                 />
               </div>
             )}
-            <h3 className="text-lg md:text-2xl font-bold font-playfair">{business.name}</h3>
+            <h3 className="text-lg md:text-xl font-bold font-playfair overflow-hidden" style={{ 
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical'
+            }}>{business.name}</h3>
           </div>
           
           {/* Description */}
-          <div className="min-h-[3.5rem] md:min-h-[4.5rem] mb-3 md:mb-4">
+          <div className="flex-grow mb-3 md:mb-4 overflow-hidden">
             <p className="text-sm md:text-base text-gray-700">
               {truncatedDescription}
             </p>
           </div>
           
-          {/* Expand button */}
-          {allowExpandText && description.length > maxLength && (
-            <button
-              onClick={toggleTextExpanded}
-              className="text-blue-600 hover:underline font-semibold mb-4"
-            >
-              {textExpanded ? "Ver menos" : "Ver más"}
-            </button>
-          )}
-          
           {/* Social Links */}
-          <div className="mt-auto flex gap-3">
-            {business.contact?.instagram && (
-              <Link href={business.contact.instagram} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:underline">
-                <InstagramIcon />
-              </Link>
-            )}
-            {business.contact?.facebook && (
-              <Link href={business.contact.facebook} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">
-                <FacebookIcon />
-              </Link>
-            )}
-            {business.contact?.website && (
-              <Link href={business.contact.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                <WebsiteIcon />
-              </Link>
-            )}
-            {business.contact?.phone && (
-              <Link href={`tel:${business.contact.phone}`} className="text-green-600 hover:underline">
-                <PhoneIcon />
-              </Link>
-            )}
+          <div className="mt-auto">
+            <ContactLinks contact={business.contact} />
           </div>
         </div>
-      </motion.div>
-
-      {/* Expanded Image Modal with Navigation */}
-      {expandedImage && (
-        <div 
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-          onClick={() => setExpandedImage(null)}
-        >
-          {/* Image container */}
-          <div className="relative max-w-4xl max-h-[90vh]">
-            <Image
-              src={expandedImage.url || ''}
-              alt={expandedImage.alt || ''}
-              width={1200}
-              height={800}
-              className="max-h-[85vh] w-auto object-contain"
-            />
-            
-            {/* Close button */}
-            <button 
-              className="absolute -top-4 -right-4 bg-white rounded-full p-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpandedImage(null);
-              }}
-            >
-              <CloseIcon />
-            </button>
-
-            {/* Image counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 px-3 py-1 rounded-full text-white text-sm">
-              {expandedImageIndex + 1} / {businessImages.length}
-            </div>
-          </div>
-
-          {/* Navigation buttons - only show if there are multiple images */}
-          {businessImages.length > 1 && (
-            <>
-              {/* Previous button - positioned at viewport edge */}
-              <button 
-                className="fixed left-6 md:left-12 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-all text-white"
-                onClick={handlePrevImage}
-              >
-                <ChevronLeftIcon />
-              </button>
-              
-              {/* Next button - positioned at viewport edge */}
-              <button 
-                className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-all text-white"
-                onClick={handleNextImage}
-              >
-                <ChevronRightIcon />
-              </button>
-            </>
-          )}
+        
+        {/* Expand/Zoom Icon */}
+        <div className="absolute bottom-3 right-3 bg-black/50 rounded-full p-2 text-white">
+          <ZoomIcon />
         </div>
-      )}
+      </div>
+
+      <ExpandedCardModal 
+        business={business}
+        isOpen={isExpanded}
+        onClose={() => setIsExpanded(false)}
+      />
     </>
   );
 } 

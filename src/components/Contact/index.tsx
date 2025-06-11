@@ -188,7 +188,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="w-full lg:w-2/5 h-80 lg:h-auto relative">
+      <div className="w-full lg:w-2/5 h-85 lg:h-auto relative">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-800 from-0% via-gray-800/80 via-30% to-gray-800/20 lg:bg-gradient-to-r lg:from-gray-800 lg:via-gray-800/30 lg:to-transparent z-10"></div>
         <img
           src="/marta_caro_4.jpg"

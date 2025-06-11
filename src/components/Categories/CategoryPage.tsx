@@ -50,7 +50,7 @@ export default function CategoryPage({ categories, businesses }: CategoryPagePro
   };
   
   return (
-    <main>
+    <main className="bg-dtup-beige-light">
       {/* Hero Section with Search */}
       <CategoriesHero categories={categories} onSearch={handleSearch} />
 
@@ -73,8 +73,6 @@ export default function CategoryPage({ categories, businesses }: CategoryPagePro
                   <BusinessCard 
                     key={business.id} 
                     business={business} 
-                    allowExpandText={true}
-                    allowExpandImage={true}
                   />
                 ))}
               </div>
@@ -92,7 +90,7 @@ export default function CategoryPage({ categories, businesses }: CategoryPagePro
       ) : (
         <>
           {/* Business Carousels - One per Category */}
-          <div className="w-full overflow-hidden">
+          <div className="w-full overflow-visible">
             {categories.map((category) => {
               // Extract businesses from category object
               const categoryBusinesses = category.businesses
