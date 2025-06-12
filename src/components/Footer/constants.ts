@@ -18,8 +18,8 @@ export const FOOTER_LINKS: FooterColumnType[] = [
   {
     heading: "Redes",
     links: [
-      { label: "Facebook", href: "https://www.facebook.com/detodounpococr" },
-      { label: "Instagram", href: "https://www.instagram.com/detodounpococr/" },
+      { label: "Facebook", href: "https://www.facebook.com/groups/621281161371849/" },
+      { label: "Instagram", href: "https://www.instagram.com/detodounpococr16?igsh=MWZkenR2cjN1NGlpNQ==" },
     ],
   },
   {
