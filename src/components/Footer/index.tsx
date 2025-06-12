@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { FOOTER_LINKS, LOGO } from "./constants";
@@ -18,6 +16,8 @@ export default function Footer() {
                 alt={LOGO.alt}
                 fill
                 style={{ objectFit: "contain", objectPosition: "left" }}
+                sizes="176px"
+                loading="lazy"
               />
             </div>
           </div>

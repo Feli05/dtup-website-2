@@ -1,49 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, memo } from "react";
 import Image from "next/image";
 import type { Business, Media } from "@/payload-types";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
 import ContactLinks from './ContactLinks';
 import ExpandedCardModal from './ExpandedCardModal';
 import { ZoomIcon } from '@/components/ui/icons';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 interface BusinessCardProps {
   business: Business;
 }
 
-export default function BusinessCard({ 
+const BusinessCard = memo(function BusinessCard({ 
   business, 
 }: BusinessCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  const maxLength = 150;
-  const description = business.description || "";
-  const truncatedDescription =
-    description.length > maxLength 
-      ? description.substring(0, maxLength) + "..." 
-      : description;
+  // Memoize processed data to avoid recalculation on re-renders
+  const processedData = useMemo(() => {
+    const maxLength = 150;
+    const description = business.description || "";
+    const truncatedDescription =
+      description.length > maxLength 
+        ? description.substring(0, maxLength) + "..." 
+        : description;
 
-  // Get business logo if it exists (logo is optional)
-  const businessLogo = business.logo && typeof business.logo === 'object' ? business.logo : null;
+    // Get business logo if it exists (logo is optional)
+    const businessLogo = business.logo && typeof business.logo === 'object' ? business.logo : null;
 
-  // Prepare business images for carousel
-  const businessImages = business.images
-    .map(imageItem => {
-      if (!imageItem || !imageItem.image) return null;
-      const image = imageItem.image;
-      return typeof image === 'object' ? image : null;
-    })
-    .filter((image): image is Media => image !== null);
+    // Prepare business images for carousel
+    const businessImages = business.images
+      .map(imageItem => {
+        if (!imageItem || !imageItem.image) return null;
+        const image = imageItem.image;
+        return typeof image === 'object' ? image : null;
+      })
+      .filter((image): image is Media => image !== null);
+
+    return {
+      truncatedDescription,
+      businessLogo,
+      businessImages,
+      primaryImage: businessImages[0] || null
+    };
+  }, [business.description, business.logo, business.images]);
 
   const openExpandedCard = () => {
     setIsExpanded(true);
+  };
+
+  const closeExpandedCard = () => {
+    setIsExpanded(false);
   };
 
   return (
@@ -53,13 +60,16 @@ export default function BusinessCard({
         onClick={openExpandedCard}
       >
         {/* Business Image */}
-        <div className="relative overflow-hidden h-44">
-          {businessImages.length > 0 && (
+        <div className="relative overflow-hidden h-44 bg-gray-100">
+          {processedData.primaryImage && (
             <Image
-              src={businessImages[0].url || ''}
-              alt={businessImages[0].alt || business.name}
+              src={processedData.primaryImage.url || ''}
+              alt={processedData.primaryImage.alt || business.name}
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
+              quality={75}
             />
           )}
         </div>
@@ -68,13 +78,16 @@ export default function BusinessCard({
         <div className="p-4 md:p-6 flex flex-col flex-grow">
           {/* Logo and Name */}
           <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-            {businessLogo && (
-              <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full flex-shrink-0">
+            {processedData.businessLogo && (
+              <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full flex-shrink-0 bg-gray-100">
                 <Image
-                  src={businessLogo.url || ''}
-                  alt={businessLogo.alt || `${business.name} logo`}
+                  src={processedData.businessLogo.url || ''}
+                  alt={processedData.businessLogo.alt || `${business.name} logo`}
                   fill
                   className="object-cover"
+                  sizes="48px"
+                  loading="lazy"
+                  quality={75}
                 />
               </div>
             )}
@@ -88,7 +101,7 @@ export default function BusinessCard({
           {/* Description */}
           <div className="flex-grow mb-3 md:mb-4 overflow-hidden">
             <p className="text-sm md:text-base text-gray-700">
-              {truncatedDescription}
+              {processedData.truncatedDescription}
             </p>
           </div>
           
@@ -107,8 +120,10 @@ export default function BusinessCard({
       <ExpandedCardModal 
         business={business}
         isOpen={isExpanded}
-        onClose={() => setIsExpanded(false)}
+        onClose={closeExpandedCard}
       />
     </>
   );
-} 
+});
+
+export default BusinessCard; 

@@ -1,24 +1,20 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { memo } from "react";
+import Image from "next/image";
 import type { ServiceItem } from "./types";
 import { FIRST_ROW_SERVICES, SECOND_ROW_SERVICES } from "./constants";
 
-const hoverTransition = { type: "spring", stiffness: 120, damping: 20, duration: 0.4 };
-
-function ServiceCard({ svc }: { svc: ServiceItem }) {
+const ServiceCard = memo(function ServiceCard({ svc }: { svc: ServiceItem }) {
   return (
-    <motion.div
-      className="flex-1 h-72 md:h-80 lg:h-96 cursor-pointer relative"
-      whileHover={{ scale: 1.03 }}
-      transition={hoverTransition}
-    >
-      <div className="w-full h-full overflow-hidden rounded-2xl shadow-lg relative">
-        <motion.img
+    <div className="flex-1 relative">
+      <div className="w-full h-72 md:h-80 lg:h-96 overflow-hidden rounded-2xl shadow-lg relative">
+        <Image
           src={svc.src}
           alt={svc.title}
-          className="w-full h-full object-cover"
-          transition={hoverTransition}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading="lazy"
+          quality={75}
         />
 
         {/* Gradient overlay */}
@@ -29,14 +25,14 @@ function ServiceCard({ svc }: { svc: ServiceItem }) {
           <h3 className="text-lg md:text-xl font-playfair text-white mb-1">
             {svc.title}
           </h3>
-          <p className="text-sm md:text-base text-white/90">
+          <p className="text-sm md:text-base text-white/90 leading-tight">
             {svc.description}
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
-}
+});
 
 export default function OurServices() {
   return (
@@ -48,14 +44,14 @@ export default function OurServices() {
       {/* First Row */}
       <div className="flex flex-col md:flex-row gap-6 mb-6">
         {FIRST_ROW_SERVICES.map((svc, i) => (
-          <ServiceCard key={i} svc={svc} />
+          <ServiceCard key={`first-${i}`} svc={svc} />
         ))}
       </div>
 
       {/* Second Row */}
       <div className="flex flex-col md:flex-row gap-6">
         {SECOND_ROW_SERVICES.map((svc, i) => (
-          <ServiceCard key={i} svc={svc} />
+          <ServiceCard key={`second-${i}`} svc={svc} />
         ))}
       </div>
     </section>

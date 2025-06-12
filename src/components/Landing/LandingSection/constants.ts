@@ -8,6 +8,4 @@ export const VIDEO_ATTRIBUTION = "Video by Grané"
 export const LOGO: LogoConfig = {
   src: "/DTUP-logo-RGB-02.png",
   alt: "DTUP Logo",
-  width: 1020,
-  height: 1020,
 }

@@ -6,7 +6,7 @@ import { WaveSeparator1, WaveSeparator2 } from "@/components/ui/icons";
 
 export default function About() {
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <section 
         id="about-intro" 
         className="min-h-screen flex flex-col relative bg-dtup-about-intro"

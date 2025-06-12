@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { memo, useRef, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { animate } from "framer-motion";
 import { STATISTICS } from "./constants";
@@ -47,7 +47,7 @@ function AnimatedNumber({
   );
 }
 
-export default function Statistics() {
+const Statistics = memo(function Statistics() {
   const stats: StatisticsData = STATISTICS;
 
   return (
@@ -59,7 +59,7 @@ export default function Statistics() {
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mb-16 sm:mb-0">
           {/* Members Card */}
-          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex items-center justify-center hover:scale-105 transition-transform duration-300">
+          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex items-center justify-center">
             <div className="flex flex-col items-center">
               <h3 className="text-5xl sm:text-7xl md:text-8xl font-bold font-markazi text-white mb-2 sm:mb-4">
                 <AnimatedNumber value={stats.totalMembers} />+
@@ -71,7 +71,7 @@ export default function Statistics() {
           </div>
 
           {/* Demographics Card */}
-          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center hover:scale-105 transition-transform duration-300">
+          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center">
             <div className="flex justify-between mb-8 sm:mb-12">
               <div className="text-center">
                 <div className="text-3xl sm:text-5xl md:text-6xl font-bold font-markazi text-white mb-2 sm:mb-4">
@@ -137,7 +137,7 @@ export default function Statistics() {
           </div>
 
           {/* Engagement Stats */}
-          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center hover:scale-105 transition-transform duration-300">
+          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center">
             <div className="space-y-8 sm:space-y-12">
               <div>
                 <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold font-markazi text-white mb-2 sm:mb-3">
@@ -166,7 +166,7 @@ export default function Statistics() {
           </div>
 
           {/* Activity Stats */}
-          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center hover:scale-105 transition-transform duration-300">
+          <div className="border border-white rounded-lg p-4 sm:p-8 aspect-square flex flex-col justify-center">
             <div className="space-y-8 sm:space-y-12">
               <div>
                 <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold font-markazi text-white mb-2 sm:mb-3">
@@ -198,4 +198,6 @@ export default function Statistics() {
       </div>
     </section>
   );
-}
+});
+
+export default Statistics;

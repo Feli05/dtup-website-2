@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { VIDEO_SRC, VIDEO_ATTRIBUTION, LOGO } from "./constants";
 
@@ -23,22 +21,20 @@ export default function LandingSection() {
       </div>
 
       {/* Content Overlay */}
-      <div className="absolute inset-0 md:inset-auto md:bottom-12 md:left-24 p-6 md:p-0 flex md:block items-end z-10">
-        <div className="w-full md:w-auto">
-          <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-none md:w-[1020px]">
-            <Image
-              src={LOGO.src}
-              alt={LOGO.alt}
-              width={LOGO.width}
-              height={LOGO.height}
-              priority
-              quality={75}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="w-full h-auto"
-            />
-          </div>
+      <div className="absolute bottom-6 left-6 md:bottom-6 md:left-24 z-10">
+        <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px]">
+          <Image
+            src={LOGO.src}
+            alt={LOGO.alt}
+            width={1020}
+            height={1020}
+            priority
+            quality={75}
+            sizes="(max-width: 640px) 300px, (max-width: 768px) 350px, 400px"
+            style={{ width: "100%", height: "auto" }}
+          />
         </div>
       </div>
     </section>
   );
-};
+}

@@ -1,42 +1,17 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { EVENTS } from "./constants";
 import type { YearBlock } from "./types";
-import useMobile from "@/hooks/useMobile";
 
 export default function EventsSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobile();
-
-  // Parallax header y-offset with fixed position
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"],
-  });
-  
-  const headerY = useTransform(scrollYProgress, 
-    [0, 0.15, 0.5], 
-    ["50%", "0%", "0%"]
-  );
-
   return (
-    <section
-      ref={containerRef}
-      className="relative text-white transition-colors duration-1000 bg-dtup-dark"
-    >
+    <section className="relative text-white transition-colors duration-1000 bg-dtup-dark">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 md:gap-y-36 gap-x-8 min-h-screen">
 
-          <motion.div
-            className={`md:col-span-4 relative md:sticky ${!isMobile && 'top-32'} h-fit mt-0 md:mt-32`}
-            style={!isMobile ? { y: headerY } : undefined}
-          >
+          <div className="md:col-span-4 relative md:sticky md:top-32 h-fit mt-0 md:mt-32">
             <h2 className="font-playfair text-6xl md:text-7xl lg:text-[5.4rem] leading-tight">
               Nuestros <br />eventos
             </h2>
-          </motion.div>
+          </div>
 
           {/* Content */}
           <div className="md:col-span-8 space-y-12 py-24">
