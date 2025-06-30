@@ -18,9 +18,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        playfair: ["Playfair Display", "serif"],
-        inter: ["Inter", "sans-serif"],
-        markazi: ["Markazi Text", "serif"],
+        playfair: ["var(--font-playfair)", "serif"],
+        inter: ["var(--font-inter)", "sans-serif"],
+        markazi: ["var(--font-markazi)", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

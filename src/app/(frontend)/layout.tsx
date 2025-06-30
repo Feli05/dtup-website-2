@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import Providers from "@/components/Wrappers/Providers";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import FontOptimization from "@/components/FontOptimization";
+import { playfairDisplay, markaziText, inter } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: {
@@ -79,8 +81,10 @@ export default function FrontendLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${playfairDisplay.variable} ${markaziText.variable} ${inter.variable}`}>
       <head>
+        <FontOptimization />
+        
         {/* Organization Structured Data */}
         <script
           type="application/ld+json"
@@ -105,16 +109,12 @@ export default function FrontendLayout({
             })
           }}
         />
-
-        {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
         {/* DNS Prefetch for performance */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
-      <body>
+      <body className={playfairDisplay.className}>
         <Providers>
           <Navbar />
           {children}

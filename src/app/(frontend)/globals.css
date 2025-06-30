@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -43,7 +41,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-playfair;
+    @apply bg-background text-foreground;
+    font-family: var(--font-playfair), serif;
     transition: background-color 0.5s ease;
   }
 }
@@ -53,7 +52,7 @@
 }
 
 .font-markazi {
-  font-family: 'Markazi Text', serif;
+  font-family: var(--font-markazi), serif;
 }
 
 /* Carousel styles for better touchpad/gesture scrolling */
